@@ -9,7 +9,7 @@ datasource db {
 
 model Anamnese {
   id                          Int       @id @default(autoincrement())
-  patient_id                  Int?
+  patient_id                  Int
   consultation_reason         String?   @db.Text
   medical_history             String?   @db.Text
   psychological_history       String?   @db.Text
@@ -22,25 +22,25 @@ model Anamnese {
   created_at                  DateTime? @default(now()) @db.Timestamp(0)
   updated_at                  DateTime? @default(now()) @db.Timestamp(0)
   deleted_at                  DateTime? @db.Timestamp(0)
-  patients                    Patient? @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "anamneses_ibfk_1")
+  patients                    Patient   @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "anamneses_ibfk_1")
 
   @@index([patient_id], map: "patient_id")
   @@map("anamneses")
 }
 
 model Appointment {
-  id                  Int                  @id @default(autoincrement())
-  appointment_date    DateTime             @db.DateTime(0)
+  id                  Int                @id @default(autoincrement())
+  appointment_date    DateTime           @db.DateTime(0)
   status_id           Int?
-  notes               String?              @db.Text
+  notes               String?            @db.Text
   patient_id          Int?
   professor_id        Int?
-  created_at          DateTime?            @default(now()) @db.Timestamp(0)
-  updated_at          DateTime?            @default(now()) @db.Timestamp(0)
-  deleted_at          DateTime?            @db.Timestamp(0)
-  patients            Patient?            @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_1")
-  professors          Professor?          @relation(fields: [professor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_2")
-  appointmentstatuses AppointmentStatus?   @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_4")
+  created_at          DateTime?          @default(now()) @db.Timestamp(0)
+  updated_at          DateTime?          @default(now()) @db.Timestamp(0)
+  deleted_at          DateTime?          @db.Timestamp(0)
+  patients            Patient?           @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_1")
+  professors          Professor?         @relation(fields: [professor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_2")
+  appointmentstatuses AppointmentStatus? @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "appointments_ibfk_4")
   consultations       Consultation[]
 
   @@index([status_id], map: "status_id")
@@ -65,9 +65,10 @@ model AppointmentAudit {
 }
 
 model AppointmentStatus {
-  id           Int            @id @default(autoincrement())
-  status_name  String         @unique(map: "status_name") @db.VarChar(50)
+  id           Int           @id @default(autoincrement())
+  status_name  String        @unique(map: "status_name") @db.VarChar(50)
   appointments Appointment[]
+
   @@map("appointmentstatuses")
 }
 
@@ -83,25 +84,25 @@ model ClinicalRecord {
   created_at            DateTime? @default(now()) @db.Timestamp(0)
   updated_at            DateTime? @default(now()) @db.Timestamp(0)
   deleted_at            DateTime? @db.Timestamp(0)
-  patients              Patient? @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clinicalrecords_ibfk_1")
+  patients              Patient?  @relation(fields: [patient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "clinicalrecords_ibfk_1")
 
   @@index([patient_id], map: "patient_id")
   @@map("clinicalrecords")
 }
 
 model Consultation {
-  id                   Int                   @id @default(autoincrement())
+  id                   Int                 @id @default(autoincrement())
   duration             Int
   type_id              Int?
   status_id            Int?
-  schedule             DateTime              @db.DateTime(0)
-  observations         String?               @db.Text
+  schedule             DateTime            @db.DateTime(0)
+  observations         String?             @db.Text
   appointment_id       Int?
-  created_at           DateTime?             @default(now()) @db.Timestamp(0)
-  updated_at           DateTime?             @default(now()) @db.Timestamp(0)
-  deleted_at           DateTime?             @db.Timestamp(0)
-  appointments         Appointment?          @relation(fields: [appointment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "consultations_ibfk_1")
-  consultationtypes    ConsultationType?    @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "consultations_ibfk_2")
+  created_at           DateTime?           @default(now()) @db.Timestamp(0)
+  updated_at           DateTime?           @default(now()) @db.Timestamp(0)
+  deleted_at           DateTime?           @db.Timestamp(0)
+  appointments         Appointment?        @relation(fields: [appointment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "consultations_ibfk_1")
+  consultationtypes    ConsultationType?   @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "consultations_ibfk_2")
   consultationstatuses ConsultationStatus? @relation(fields: [status_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "consultations_ibfk_3")
 
   @@index([appointment_id], map: "appointment_id")
@@ -127,32 +128,31 @@ model ConsultationAudit {
 }
 
 model ConsultationStatus {
-  id            Int             @id @default(autoincrement())
-  status_name   String          @unique(map: "status_name") @db.VarChar(50)
+  id            Int            @id @default(autoincrement())
+  status_name   String         @unique(map: "status_name") @db.VarChar(50)
   consultations Consultation[]
 
   @@map("consultationstatuses")
-  
 }
 
 model ConsultationType {
-  id            Int             @id @default(autoincrement())
-  type_name     String          @unique(map: "type_name") @db.VarChar(50)
+  id            Int            @id @default(autoincrement())
+  type_name     String         @unique(map: "type_name") @db.VarChar(50)
   consultations Consultation[]
 
   @@map("consultationtypes")
 }
 
 model Notification {
-  id                Int                @id @default(autoincrement())
+  id                Int               @id @default(autoincrement())
   type_id           Int?
-  send_date         DateTime           @db.DateTime(0)
-  content           String             @db.Text
+  send_date         DateTime          @db.DateTime(0)
+  content           String            @db.Text
   recipient_id      Int?
-  created_at        DateTime?          @default(now()) @db.Timestamp(0)
-  updated_at        DateTime?          @default(now()) @db.Timestamp(0)
-  deleted_at        DateTime?          @db.Timestamp(0)
-  users             User?              @relation(fields: [recipient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notifications_ibfk_1")
+  created_at        DateTime?         @default(now()) @db.Timestamp(0)
+  updated_at        DateTime?         @default(now()) @db.Timestamp(0)
+  deleted_at        DateTime?         @db.Timestamp(0)
+  users             User?             @relation(fields: [recipient_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notifications_ibfk_1")
   notificationtypes NotificationType? @relation(fields: [type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "notifications_ibfk_2")
 
   @@index([type_id], map: "type_id")
@@ -161,34 +161,37 @@ model Notification {
 }
 
 model NotificationType {
-  id            Int             @id @default(autoincrement())
-  type_name     String          @unique(map: "type_name") @db.VarChar(50)
+  id            Int            @id @default(autoincrement())
+  type_name     String         @unique(map: "type_name") @db.VarChar(50)
   notifications Notification[]
+
   @@map("notificationtypes")
 }
 
 model Patient {
-  id                 Int               @id
-  allergies          String?           @db.Text
-  medical_conditions String?           @db.Text
-  created_at         DateTime?         @default(now()) @db.Timestamp(0)
-  updated_at         DateTime?         @default(now()) @db.Timestamp(0)
-  deleted_at         DateTime?         @db.Timestamp(0)
+  id                 Int              @id
+  allergies          String?          @db.Text
+  medical_conditions String?          @db.Text
+  created_at         DateTime?        @default(now()) @db.Timestamp(0)
+  updated_at         DateTime?        @default(now()) @db.Timestamp(0)
+  deleted_at         DateTime?        @db.Timestamp(0)
   anamneses          Anamnese[]
   appointments       Appointment[]
   clinicalrecords    ClinicalRecord[]
-  users              User              @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "patients_ibfk_1")
+  users              User             @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "patients_ibfk_1")
+
   @@map("patients")
 }
 
 model Professor {
-  id                        Int            @id
-  professional_registration String         @db.VarChar(20)
-  created_at                DateTime?      @default(now()) @db.Timestamp(0)
-  updated_at                DateTime?      @default(now()) @db.Timestamp(0)
-  deleted_at                DateTime?      @db.Timestamp(0)
+  id                        Int           @id
+  professional_registration String        @db.VarChar(20)
+  created_at                DateTime?     @default(now()) @db.Timestamp(0)
+  updated_at                DateTime?     @default(now()) @db.Timestamp(0)
+  deleted_at                DateTime?     @db.Timestamp(0)
   appointments              Appointment[]
-  users                     User           @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "professors_ibfk_1")
+  users                     User          @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "professors_ibfk_1")
+
   @@map("professors")
 }
 
@@ -208,20 +211,20 @@ model Student {
 }
 
 model User {
-  id                                  Int             @id @default(autoincrement())
-  cpf                                 String?         @unique(map: "cpf") @db.VarChar(11)
-  name                                String          @db.VarChar(100)
-  phone                               String?         @db.VarChar(15)
-  email                               String?         @db.VarChar(100)
-  address                             String?         @db.VarChar(255)
-  complement                          String?         @db.VarChar(100)
-  number                              String?         @db.VarChar(10)
-  zip_code                            String?         @db.VarChar(9)
-  birth_date                          DateTime?       @db.Date
-  password                            String          @db.VarChar(255)
-  created_at                          DateTime?       @default(now()) @db.Timestamp(0)
-  updated_at                          DateTime?       @default(now()) @db.Timestamp(0)
-  deleted_at                          DateTime?       @db.Timestamp(0)
+  id                                  Int            @id @default(autoincrement())
+  cpf                                 String?        @unique(map: "cpf") @db.VarChar(11)
+  name                                String         @db.VarChar(100)
+  phone                               String?        @db.VarChar(15)
+  email                               String?        @db.VarChar(100)
+  address                             String?        @db.VarChar(255)
+  complement                          String?        @db.VarChar(100)
+  number                              String?        @db.VarChar(10)
+  zip_code                            String?        @db.VarChar(9)
+  birth_date                          DateTime?      @db.Date
+  password                            String         @db.VarChar(255)
+  created_at                          DateTime?      @default(now()) @db.Timestamp(0)
+  updated_at                          DateTime?      @default(now()) @db.Timestamp(0)
+  deleted_at                          DateTime?      @db.Timestamp(0)
   notifications                       Notification[]
   patients                            Patient?
   professors                          Professor?
@@ -247,6 +250,7 @@ model UserAudit {
   operation_type      usersaudit_operation_type?
   operation_timestamp DateTime?                  @default(now()) @db.Timestamp(0)
   performed_by        String?                    @db.VarChar(100)
+
   @@map("usersaudit")
 }
 
