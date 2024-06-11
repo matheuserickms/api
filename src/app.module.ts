@@ -3,9 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AnamneseModule } from './anamnese/anamnese.module';
+import { AppointmentModule } from './appointment/appointment.module';
+import { AppointmentStatusModule } from './appointment-status/appointment-status.module';
+import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
 
 @Module({
-  imports: [UserModule, AnamneseModule],
+  imports: [UserModule, AnamneseModule, AppointmentModule, AppointmentStatusModule, ClinicalRecordModule],
   controllers: [AppController],
   providers: [AppService],
   exports: [AppService]
