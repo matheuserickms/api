@@ -8,6 +8,8 @@ import { AppointmentStatusModule } from './appointment-status/appointment-status
 import { ClinicalRecordModule } from './clinical-record/clinical-record.module';
 import { ConsultationModule } from './consultation/consultation.module';
 import { ConsultationStatusModule } from './consultation-status/consultation-status.module';
+import { ConsultationTypeModule } from './consultation-type/consultation-type.module';
+import { NotificationModule } from './notification/notification-module';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { ConsultationStatusModule } from './consultation-status/consultation-sta
     AppointmentStatusModule, 
     ClinicalRecordModule, 
     ConsultationModule,
-    ConsultationStatusModule
+    ConsultationStatusModule,
+    ConsultationTypeModule,
+    NotificationModule
   ],
   controllers: [AppController],
   providers: [AppService],
