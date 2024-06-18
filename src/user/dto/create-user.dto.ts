@@ -16,4 +16,10 @@ export class CreateUserDTO {
     @IsOptional()
     @IsDateString()
     birth_date: string;
+
+    @IsString()
+    cpf: string;
+
+    @IsString()
+    number: string;
 }

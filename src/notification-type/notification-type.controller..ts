@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from "@nestjs/common";
 import { NotificationTypeService } from "./notification-type.service";
 import { UpdatePutNotificationTypeDTO } from "./dto/update-put-notification-type.dto";
-import { CreateNotificationTypeDTO } from "./dto/create-notification.dto";
+import { CreateNotificationTypeDTO } from "./dto/create-notification-type.dto";
+import { UpdatePatchNotificationTypeDTO } from "./dto/update-patch-notification-type.dto";
 
 @Controller('notification-types')
 export class NotificationTypeController {
@@ -25,6 +26,16 @@ export class NotificationTypeController {
     @Put(':id')
     async update(@Body() data: UpdatePutNotificationTypeDTO, @Param('id', ParseIntPipe) id: number) {
         return this.NotificationTypeService.update(id,data)
+    }
+
+    @Patch(':id')
+    async updatePatch(@Body() data: UpdatePatchNotificationTypeDTO, @Param('id', ParseIntPipe) id: number) {
+        return this.NotificationTypeService.updatePatch(id,data)
+    }
+
+    @Delete(':id')
+    async delete(@Param('id', ParseIntPipe) id: number) {
+        return this.NotificationTypeService.delete(id)
     }
 
 }

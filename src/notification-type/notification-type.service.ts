@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { CreateNotificationTypeDTO } from "./dto/create-notification.dto";
+import { CreateNotificationTypeDTO } from "./dto/create-notification-type.dto";
 import { UpdatePutNotificationTypeDTO } from "./dto/update-put-notification-type.dto";
 import { UpdatePatchNotificationTypeDTO } from "./dto/update-patch-notification-type.dto";
 
@@ -12,18 +12,18 @@ export class NotificationTypeService {
 
         const notificationType: any = data;
 
-        return this.prisma.notification.create({
+        return this.prisma.notificationType.create({
             data: notificationType
         });
     }
 
     async list() {
-        return this.prisma.notification.findMany();
+        return this.prisma.notificationType.findMany();
     }
 
     async show(id: number) {
         await this.exists(id);
-        return this.prisma.notification.findUnique({
+        return this.prisma.notificationType.findUnique({
             where: {
                 id
             }
@@ -34,7 +34,7 @@ export class NotificationTypeService {
         await this.exists(id);
 
         const notificationType:any = data;
-        return this.prisma.notification.update({
+        return this.prisma.notificationType.update({
             where: {
                 id
             },
@@ -47,7 +47,7 @@ export class NotificationTypeService {
         await this.exists(id);
         const notificationType :any = {};
         notificationType.type_name = data.type_name;
-        return this.prisma.notification.update({
+        return this.prisma.notificationType.update({
             where: {
                 id
             },
@@ -59,7 +59,7 @@ export class NotificationTypeService {
 
         await this.exists(id);
 
-        return this.prisma.notification.delete({
+        return this.prisma.notificationType.delete({
             where: {
                 id
             }
@@ -67,7 +67,7 @@ export class NotificationTypeService {
     }
 
     private async exists(id: number) {
-        const notification = await this.prisma.notification.findUnique({
+        const notification = await this.prisma.notificationType.findUnique({
             where: {
                 id
             }

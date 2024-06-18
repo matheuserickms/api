@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateConsultationDTO } from "./dto/create-consultation.dto";
 
@@ -121,7 +121,7 @@ export class ConsultationService {
         });
 
         if (!user) {
-            throw new Error('Consultation not found');
+            throw new NotFoundException('Consultation not found');
         }
     }
 }

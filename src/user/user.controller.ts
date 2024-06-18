@@ -8,9 +8,7 @@ import { LogInterceptor } from "src/interceptors/log.interceptor";
 @Controller('users')
 export class UserController {
 
-    constructor(private readonly UserService: UserService ){
-
-    }
+    constructor(private readonly UserService: UserService ){ }
     // @UseInterceptors(LogInterceptor)
     @Post()
     async create(@Body() data: CreateUserDTO) {

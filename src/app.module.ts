@@ -10,6 +10,8 @@ import { ConsultationModule } from './consultation/consultation.module';
 import { ConsultationStatusModule } from './consultation-status/consultation-status.module';
 import { ConsultationTypeModule } from './consultation-type/consultation-type.module';
 import { NotificationModule } from './notification/notification-module';
+import { NotificationTypeModule } from './notification-type/notification-type.module';
+import { PatientModule } from './Patient/patient.module';
 
 @Module({
   imports: [
@@ -21,7 +23,9 @@ import { NotificationModule } from './notification/notification-module';
     ConsultationModule,
     ConsultationStatusModule,
     ConsultationTypeModule,
-    NotificationModule
+    NotificationModule,
+    NotificationTypeModule,
+    PatientModule
   ],
   controllers: [AppController],
   providers: [AppService],

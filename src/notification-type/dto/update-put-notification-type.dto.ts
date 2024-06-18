@@ -1,3 +1,3 @@
-import { CreateNotificationTypeDTO } from "./create-notification.dto";
+import { CreateNotificationTypeDTO } from "./create-notification-type.dto";
 
 export class UpdatePutNotificationTypeDTO extends CreateNotificationTypeDTO { }

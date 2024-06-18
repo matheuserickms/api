@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `anamneses` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `patient_id` INTEGER NULL,
+    `patient_id` INTEGER NOT NULL,
     `consultation_reason` TEXT NULL,
     `medical_history` TEXT NULL,
     `psychological_history` TEXT NULL,
@@ -207,7 +207,7 @@ CREATE TABLE `users` (
     `complement` VARCHAR(100) NULL,
     `number` VARCHAR(10) NULL,
     `zip_code` VARCHAR(9) NULL,
-    `birth_date` DATE NOT NULL,
+    `birth_date` DATE NULL,
     `password` VARCHAR(255) NOT NULL,
     `created_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
     `updated_at` TIMESTAMP(0) NULL DEFAULT CURRENT_TIMESTAMP(0),
