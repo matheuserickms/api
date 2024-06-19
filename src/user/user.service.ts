@@ -11,7 +11,7 @@ export class UserService {
 
     async create(data: CreateUserDTO) {
 
-        await this.existsCpf(data.cpf);
+        await this.existsCpf(data.cpf, null);
 
         const user: any = data;
 
@@ -25,6 +25,10 @@ export class UserService {
 
         if (data.cpf) {
             user.cpf = String(data.cpf)
+        }
+
+        if (data.zip_code) {
+            user.zip_code = String(data.zip_code)
         }
 
         return this.prisma.user.create({
@@ -48,7 +52,7 @@ export class UserService {
 
         await this.exists(id);
 
-        await this.existsCpf(cpf);
+        await this.existsCpf(cpf, id);
 
         if (!birth_date) {
             birth_date = null
@@ -66,14 +70,14 @@ export class UserService {
         })
     }
 
-    async updatePartial(id: number, { email, name, password, birth_date, cpf , number}: UpdatePatchUserDTO) {
+    async updatePartial(id: number, { email, name, password, birth_date, cpf, number }: UpdatePatchUserDTO) {
 
         await this.exists(id);
 
         const data: any = {}
 
         if (cpf) {
-            await this.existsCpf(cpf);
+            await this.existsCpf(cpf,id);
             data.cpf = cpf
         }
 
@@ -122,14 +126,28 @@ export class UserService {
         }
     }
 
-    async existsCpf(cpf: string) {
-        const user = await this.prisma.user.findUnique({
+    async existsCpf(cpf: string, id: number) {
+
+        const where_id  = (id) ? { id: { not: id } } : {};
+
+        const user = await this.prisma.user.findMany({
             where: {
-                cpf
+                //cpf : cpf,
+                //id não pode ser igual ao id que está sendo atualizado
+                //id: {
+                //    not: id
+                //}
+                //cpf igual ao cpf e id diferente do id que está sendo atualizado
+                AND: [
+                    {
+                        cpf: cpf
+                    },
+                    where_id
+                ]
             }
         });
 
-        if (user) {
+        if (user.length > 0) {
             throw new NotFoundException('CPF já cadastrado');
         }
     }

@@ -17,9 +17,12 @@ export class CreateUserDTO {
     @IsDateString()
     birth_date: string;
 
-    @IsString()
+    // @IsString()
     cpf: string;
 
-    @IsString()
+    // @IsString()
     number: string;
+
+    // @IsString()
+    zip_code: string;
 }
