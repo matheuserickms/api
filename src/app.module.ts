@@ -13,6 +13,7 @@ import { NotificationModule } from './notification/notification-module';
 import { NotificationTypeModule } from './notification-type/notification-type.module';
 import { PatientModule } from './patient/patient.module';
 import { ProfessorModule } from './professor/professor.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { ProfessorModule } from './professor/professor.module';
     NotificationModule,
     NotificationTypeModule,
     PatientModule,
-    ProfessorModule    
+    ProfessorModule,
+    StudentModule    
   ],
   controllers: [AppController],
   providers: [AppService],
