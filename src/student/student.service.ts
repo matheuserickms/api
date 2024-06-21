@@ -127,4 +127,16 @@ export class StudentService {
             throw new NotFoundException('User not found');
         }
     }
+
+    async existsAdvisor(id: number) {
+        const advisor = await this.primas.user.findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        if (!advisor) {
+            throw new NotFoundException('Advisor not found');
+        }
+    }
 }

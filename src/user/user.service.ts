@@ -48,8 +48,8 @@ export class UserService {
         });
     }
 
-    async update(id: number, { email, name, password, birth_date, cpf, number }: UpdatePutUserDTO) {
-
+    async update(id: number, { email, name, password, birth_date, cpf, number, phone, address, complement, zip_code }: UpdatePutUserDTO) {
+        
         await this.exists(id);
 
         await this.existsCpf(cpf, id);
@@ -62,8 +62,16 @@ export class UserService {
             number = String(number)
         }
 
+        if (cpf) {
+            cpf = String(cpf)
+        }
+
+        if (zip_code) {
+            zip_code = String(zip_code)
+        }
+
         return this.prisma.user.updateMany({
-            data: { email, name, password, birth_date: birth_date ? new Date(birth_date) : null },
+            data: { email, name, password, birth_date: birth_date ? new Date(birth_date) : null, cpf, number, phone, address, complement, zip_code},
             where: {
                 id
             }
@@ -77,7 +85,7 @@ export class UserService {
         const data: any = {}
 
         if (cpf) {
-            await this.existsCpf(cpf,id);
+            await this.existsCpf(cpf, id);
             data.cpf = cpf
         }
 
@@ -128,7 +136,7 @@ export class UserService {
 
     async existsCpf(cpf: string, id: number) {
 
-        const where_id  = (id) ? { id: { not: id } } : {};
+        const where_id = (id) ? { id: { not: id } } : {};
 
         const user = await this.prisma.user.findMany({
             where: {

@@ -25,4 +25,10 @@ export class CreateUserDTO {
 
     // @IsString()
     zip_code: string;
+
+    phone: string;
+
+    address: string;
+
+    complement: string;
 }
