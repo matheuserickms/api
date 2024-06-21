@@ -11,7 +11,18 @@ export class ProfessorService {
     async create(data: CreateProfessorDTO) {
         const professor: any = data;
 
+        //if exists professor
         if (professor.id) {
+
+            const exists = await this.prisma.professor.findUnique({
+                where: {
+                    id: parseInt(professor.id)
+                }
+            });
+
+            if (exists) {
+                throw new NotFoundException('Professor already exists')
+            }
             
             professor.id = parseInt(professor.id)
 
@@ -38,13 +49,20 @@ export class ProfessorService {
     }
 
     async list() {
-        return this.prisma.professor.findMany()
+        return this.prisma.professor.findMany({
+            include: {
+                users: true
+            }
+        })
     }
 
     async show(id: number) {
         return this.prisma.professor.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                users: true
             }
         });
     }

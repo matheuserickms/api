@@ -37,13 +37,24 @@ export class StudentService {
     }
 
     async list() {
-        return this.primas.student.findMany();
+        return this.primas.student.findMany(
+            {
+                include: {
+                    users: true,
+                    adivisors: true
+                }
+            }
+        );
     }
 
     async show(id: number) {
         return this.primas.student.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                users: true,
+                adivisors: true
             }
         });
     }
@@ -53,7 +64,7 @@ export class StudentService {
         const student: any = {};
 
         await this.exists(id);
-        
+
         student.registration = String(registration);
 
         student.semester = parseInt(String(semester));
