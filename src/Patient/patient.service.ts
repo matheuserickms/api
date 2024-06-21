@@ -22,14 +22,22 @@ export class PatientService {
     }
 
     async list() {
-        return this.prisma.patient.findMany()
+        return this.prisma.patient.findMany({
+            include: {
+                users: true
+            }
+        })
     }
 
     async show(id: number) {
         return this.prisma.patient.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                users: true
             }
+
         });
     }
 
