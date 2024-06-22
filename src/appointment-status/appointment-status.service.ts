@@ -7,8 +7,16 @@ export class AppointmentStatusService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(data: CreateAppointmentStatusDTO) {
+
+        const appointmentStatus: any = data;
+
+        if (data.id) {
+            appointmentStatus.id = Number(data.id);
+            await this.alreadyExists(data.id);
+        }
+
         return this.prisma.appointmentStatus.create({
-            data
+            data : appointmentStatus
         });
     }
 
@@ -25,6 +33,7 @@ export class AppointmentStatusService {
     }
 
     async update(id: number, data: CreateAppointmentStatusDTO) {
+        await this.exists(id);
         return this.prisma.appointmentStatus.update({
             data,
             where: {
@@ -34,6 +43,7 @@ export class AppointmentStatusService {
     }
 
     async delete(id: number) {
+        await this.exists(id);
         return this.prisma.appointmentStatus.delete({
             where: {
                 id
@@ -50,6 +60,18 @@ export class AppointmentStatusService {
 
         if (!user) {
             throw new NotFoundException('Appointment status not found');
+        }
+    }
+
+    async alreadyExists(id: number) {
+        const user = await this.prisma.appointmentStatus.findUnique({
+            where: {
+                id
+            }
+        });
+
+        if (user) {
+            throw new NotFoundException('Appointment status already exists');
         }
     }
 

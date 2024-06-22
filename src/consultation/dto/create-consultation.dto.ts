@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, Max, Min } from "class-validator";
 
 export class CreateConsultationDTO {
     /*
@@ -11,16 +11,18 @@ export class CreateConsultationDTO {
     appointment_id       Int? */
 
     @IsNotEmpty()
-    @IsInt()
-    @Type(() => Number)
+    // @IsInt()
+    // @Type(() => Number)
+    // @Min(1)
+    // @Max(120)
     duration: number;
 
     @IsOptional()
-    @IsInt()
+    // @IsInt()
     type_id: number;
 
     @IsOptional()
-    @IsInt()
+    // @IsInt()
     status_id: number;
 
     @IsNotEmpty()
@@ -32,6 +34,6 @@ export class CreateConsultationDTO {
     observations: string;
 
     @IsOptional()
-    @IsInt()
+    // @IsInt()
     appointment_id: number;
 }

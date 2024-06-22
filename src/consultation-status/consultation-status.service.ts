@@ -71,4 +71,15 @@ export class ConsultationStatusService {
         }
     }
 
+    private async alreadyExists(id: number) {
+        const user = await this.prisma.consultationStatus.findUnique({
+            where: {
+                id
+            }
+        });
+
+        if (user) {
+            throw new NotFoundException('Consultation Status already exists');
+        }
+    }
 }
