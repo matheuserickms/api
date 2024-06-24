@@ -4,7 +4,7 @@ import { CreateAppointmentDTO } from "./dto/create-appointment.dto";
 
 @Controller('appointments')
 export class AppointmentController {
-    constructor(private readonly AppointmentService: AppointmentService) {}
+    constructor(private readonly AppointmentService: AppointmentService) { }
 
     @Post()
     async create(@Body() data: CreateAppointmentDTO) {
@@ -16,23 +16,28 @@ export class AppointmentController {
         return this.AppointmentService.list();
     }
 
+    @Get('/patients/:id')
+    async listByPatient(@Param('id', ParseIntPipe) id: number) {
+        return this.AppointmentService.listByPatient(id);
+    }
+
     @Get(':id')
     async show(@Param('id', ParseIntPipe) id: number) {
         return this.AppointmentService.show(id);
     }
 
     @Put(':id')
-    async update(@Body() data: any, @Param('id', ParseIntPipe) id:number) {
-        return this.AppointmentService.update(id,data);
+    async update(@Body() data: any, @Param('id', ParseIntPipe) id: number) {
+        return this.AppointmentService.update(id, data);
     }
 
     @Patch(':id')
-    async updatePartial(@Body() data: any, @Param('id', ParseIntPipe) id:number) {
-        return this.AppointmentService.updatePartial(id,data);
+    async updatePartial(@Body() data: any, @Param('id', ParseIntPipe) id: number) {
+        return this.AppointmentService.updatePartial(id, data);
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id:number) {
+    async delete(@Param('id', ParseIntPipe) id: number) {
         return this.AppointmentService.delete(id);
     }
 }

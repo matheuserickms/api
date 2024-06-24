@@ -28,8 +28,9 @@ export class PatientService {
             }
         })
     }
-
+    
     async show(id: number) {
+
         return this.prisma.patient.findUnique({
             where: {
                 id: id

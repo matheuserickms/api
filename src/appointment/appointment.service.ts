@@ -17,7 +17,7 @@ export class AppointmentService {
         if (appointment.status_id) {
             appointment.status_id = Number(appointment.status_id);
 
-            this.existsStatus(appointment.status_id);
+            await this.existsStatus(appointment.status_id);
         }
 
         if (appointment.notes) {
@@ -26,13 +26,13 @@ export class AppointmentService {
 
         if (appointment.patient_id) {
             appointment.patient_id = Number(appointment.patient_id);
-            this.existsPatient(appointment.patient_id);
+            await this.existsPatient(appointment.patient_id);
         }
 
         if (appointment.professor_id) {
             appointment.professor_id = Number(appointment.professor_id);
 
-            this.existsProfessor(appointment.professor_id);
+            await this.existsProfessor(appointment.professor_id);
         }
 
         return this.prisma.appointment.create({
@@ -40,9 +40,29 @@ export class AppointmentService {
         });
     }
 
-
     async list() {
         return this.prisma.appointment.findMany({
+            include: {
+                appointmentstatuses: true,
+                patients: {
+                    include: {
+                        users: true
+                    }
+                },
+                professors: {
+                    include: {
+                        users: true
+                    }
+                }
+            }
+        })
+    }
+
+    async listByPatient(patient_id: number) {
+        return this.prisma.appointment.findMany({
+            where: {
+                patient_id: patient_id
+            },
             include: {
                 appointmentstatuses: true,
                 patients: {
@@ -82,24 +102,29 @@ export class AppointmentService {
 
     async update(id: number, { appointment_date, status_id, notes, patient_id, professor_id }: any) {
 
-        await this.exists(id);
-
         const data: any = {}
 
         if (appointment_date) {
-            data.appointment_date = new Date(appointment_date);
+            try  {
+                data.appointment_date = new Date(appointment_date).toISOString();
+            } catch (error) {
+                throw new NotFoundException('Invalid date format');
+            }
+            
         } else {
-            data.appointment_date = null;
+            throw new NotFoundException('Appointment date is required');
         }
 
         if (status_id) {
             data.status_id = parseInt(status_id);
 
             await this.existsStatus(data.status_id);
-        }
+        } 
 
         if (notes) {
             data.notes = notes;
+        } else {
+            data.notes = null;
         }
 
         if (patient_id) {

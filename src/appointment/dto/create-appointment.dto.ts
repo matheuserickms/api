@@ -5,16 +5,16 @@ export class CreateAppointmentDTO {
     @IsDateString()
     appointment_date: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     status_id: number;
 
     @IsOptional()
     @IsString()
     notes: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     patient_id: number;
 
-    @IsOptional()
+    @IsNotEmpty()
     professor_id: number;
 }
