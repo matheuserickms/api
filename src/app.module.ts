@@ -11,9 +11,9 @@ import { ConsultationStatusModule } from './consultation-status/consultation-sta
 import { ConsultationTypeModule } from './consultation-type/consultation-type.module';
 import { NotificationModule } from './notification/notification-module';
 import { NotificationTypeModule } from './notification-type/notification-type.module';
-import { PatientModule } from './patient/patient.module';
 import { ProfessorModule } from './professor/professor.module';
 import { StudentModule } from './student/student.module';
+import { PatientModule} from './patient/patient.module';
 
 @Module({
   imports: [
