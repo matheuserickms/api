@@ -24,6 +24,12 @@ export class AnamneseController {
        return this.AnamneseService.show(id);
     }
 
+    @Get('patients/:id')
+    async showByPatientId(@Param('id', ParseIntPipe) id: number) {
+        return this.AnamneseService.showByPatientId(id);
+    }
+    
+
     @Put(':id')
     async update(@Body() data: UpdatePutAnamneseDTO, @Param('id', ParseIntPipe) id:number) {
         return this.AnamneseService.update(id,data);
