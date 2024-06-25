@@ -27,6 +27,18 @@ export class ClinicalRecordService {
         return this.prisma.clinicalRecord.findMany()
     }
 
+    //list by idPatient
+    async listByIdPatient(id: number) {
+        return this.prisma.clinicalRecord.findMany({
+            where: {
+                patient_id: id
+            },
+            orderBy: {
+                created_at: 'desc'
+            }
+        });
+    }
+
     async show(id: number) {
         return this.prisma.clinicalRecord.findUnique({
             where: {

@@ -18,6 +18,11 @@ export class ClinicalRecordController {
         return this.ClinicalRecordService.list();
     }
 
+    @Get('patients/:id')
+    async listByIdPatient(@Param('id', ParseIntPipe) id: number) {
+        return this.ClinicalRecordService.listByIdPatient(id);
+    }
+
     @Get(':id')
     async show(@Param('id', ParseIntPipe) id: number) {
         return this.ClinicalRecordService.show(id);
