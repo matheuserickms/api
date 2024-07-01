@@ -3,6 +3,8 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
+import * as bcryptc from 'bcrypt';
+import { hash } from "crypto";
 
 @Injectable()
 export class UserService {
@@ -16,20 +18,28 @@ export class UserService {
         const user: any = data;
 
         if (data.birth_date) {
-            user.birth_date = new Date(data.birth_date)
+            user.birth_date = new Date(data.birth_date);
         }
 
         if (data.number) {
-            user.number = String(data.number)
+            user.number = String(data.number);
         }
 
         if (data.cpf) {
-            user.cpf = String(data.cpf)
+            user.cpf = String(data.cpf);
         }
 
         if (data.zip_code) {
-            user.zip_code = String(data.zip_code)
+            user.zip_code = String(data.zip_code);
         }
+
+        if (data.role){
+            user.role = parseInt(user.role);
+        }
+
+        user.password = data.password;
+
+        user.password = await bcryptc.hash(data.password, await bcryptc.genSalt());
 
         return this.prisma.user.create({
             data: user
@@ -37,6 +47,7 @@ export class UserService {
     }
 
     async list() {
+        //trazer dados de professor e patient
         return this.prisma.user.findMany()
     }
 
@@ -48,7 +59,7 @@ export class UserService {
         });
     }
 
-    async update(id: number, { email, name, password, birth_date, cpf, number, phone, address, complement, zip_code }: UpdatePutUserDTO) {
+    async update(id: number, { email, name, password, birth_date, cpf, number, phone, address, complement, zip_code, role }: UpdatePutUserDTO) {
         
         await this.exists(id);
 
@@ -70,6 +81,14 @@ export class UserService {
             zip_code = String(zip_code)
         }
 
+        if (role) {
+            role = parseInt(String(role));
+        }
+
+        if(password){
+            password = await bcryptc.hash(password, await bcryptc.genSalt());
+        }
+
         return this.prisma.user.updateMany({
             data: { email, name, password, birth_date: birth_date ? new Date(birth_date) : null, cpf, number, phone, address, complement, zip_code},
             where: {
@@ -78,7 +97,7 @@ export class UserService {
         })
     }
 
-    async updatePartial(id: number, { email, name, password, birth_date, cpf, number }: UpdatePatchUserDTO) {
+    async updatePartial(id: number, { email, name, password, birth_date, cpf, number, role }: UpdatePatchUserDTO) {
 
         await this.exists(id);
 
@@ -107,6 +126,14 @@ export class UserService {
 
         if (number) {
             data.number = String(number)
+        }
+
+        if (role) {
+            data.role = parseInt(String(role));
+        }
+
+        if (password) {
+            data.password = await bcryptc.hash(password, await bcryptc.genSalt());
         }
 
         return this.prisma.user.updateMany({

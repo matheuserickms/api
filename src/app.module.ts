@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -14,10 +14,20 @@ import { NotificationTypeModule } from './notification-type/notification-type.mo
 import { ProfessorModule } from './professor/professor.module';
 import { StudentModule } from './student/student.module';
 import { PatientModule} from './patient/patient.module';
+import { AuthModule } from './auth/auth.module';
+import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    UserModule, 
+    ConfigModule.forRoot(),
+    ThrottlerModule.forRoot([{
+      ttl:600,
+      limit: 10,
+    }]),
+    forwardRef(() => AuthModule),
+    forwardRef(() => UserModule), 
     AnamneseModule, 
     AppointmentModule, 
     AppointmentStatusModule, 
@@ -32,7 +42,10 @@ import { PatientModule} from './patient/patient.module';
     StudentModule    
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: ThrottlerGuard
+  }],
   exports: [AppService]
 })
 export class AppModule { }

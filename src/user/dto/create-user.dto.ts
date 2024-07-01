@@ -1,4 +1,6 @@
-import { IsString, IsEmail, IsStrongPassword, IsOptional, IsDateString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsString, IsEmail, IsStrongPassword, IsOptional, IsDateString, IsInt, IsEnum } from "class-validator";
+import { Role } from "src/enum/role.enum";
 
 export class CreateUserDTO {
 
@@ -17,7 +19,7 @@ export class CreateUserDTO {
     @IsDateString()
     birth_date: string;
 
-    // @IsString()
+// @IsString()
     cpf: string;
 
     // @IsString()
@@ -31,4 +33,10 @@ export class CreateUserDTO {
     address: string;
 
     complement: string;
+    
+    @IsOptional()
+    @Type(() => Number)
+    @IsInt()
+    @IsEnum(Role)
+    role: Role;
 }
