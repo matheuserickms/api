@@ -4,7 +4,7 @@ import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
 import * as bcryptc from 'bcrypt';
-import { hash } from "crypto";
+// import { hash } from "crypto";
 
 @Injectable()
 export class UserService {

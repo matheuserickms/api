@@ -3,7 +3,7 @@ import { IsString, IsEmail, IsStrongPassword, IsOptional, IsDateString, IsInt, I
 import { Role } from "src/enum/role.enum";
 
 export class CreateUserDTO {
-
+    @IsOptional()
     @IsString()
     name: string;
 

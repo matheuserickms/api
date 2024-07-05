@@ -9,20 +9,20 @@ import { Role } from "src/enum/role.enum";
 import { RoleGuard } from "src/guards/role.guard";
 import { AuthGuard } from "src/guards/auth.guard";
 
-@UseGuards(AuthGuard,RoleGuard)
+// @UseGuards(AuthGuard,RoleGuard)
 @Controller('users')
 export class UserController {
 
     constructor(private readonly UserService: UserService ){ }
     // @UseInterceptors(LogInterceptor)
-    @Roles(Role.Admin)
+    // @Roles(Role.Admin)
     @Post()
     async create(@Body() data: CreateUserDTO) {
         console.log('entrou aqui');
         return this.UserService.create(data);
     }
 
-    @Roles(Role.Admin, Role.User)
+    // @Roles(Role.Admin, Role.User)
     @Get()
     async list() {
         return this.UserService.list();
